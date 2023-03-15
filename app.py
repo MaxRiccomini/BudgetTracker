@@ -28,4 +28,5 @@ class CustomLabel(tk.Label):
         self.config(bg="#E0E0E0", fg='black', font=("Arial", 14))
 
 
+
 root.mainloop()
