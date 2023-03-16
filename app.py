@@ -58,6 +58,7 @@ class PlaceholderEntry(tk.Entry):
         self.config(fg=self.placeholder_color)
 
 
+
 transaction_list = CustomFrame(root, width=300, height=400)
 transaction_list.config()
 transaction_list.place(x=5, y=5)
