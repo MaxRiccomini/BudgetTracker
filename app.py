@@ -1,32 +1,50 @@
 import tkinter as tk
+import time
 from tkinter import *
+import pandas as pd
+import matplotlib
 
 root = tk.Tk()
 root.title("Budget Tracker")
-root.geometry("1000x600")
+root.geometry("800x1000")
 
 class CustomButton(tk.Button):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
 
-        # initialization of button using color theme-based configs
-        self.config(bg="#003366", fg='#003366', font=("Arial", 14)
+        # initialization of button using theme-based configs
+        self.config(bg="#003366", fg='#003366', font=("Arial", 14))
 
-class CustomEntry(tk.Entry):
+class CustomFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
 
-        # initialization of entry using color theme-based configs
-        self.config(bg="white")
+        #initiliazation of frame using theme-based configs
+        self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
+
+class CustomCheckButton(tk.Checkbutton):
+    def __init(self, master=None, **kwargs):
+        super().init(master, **kwargs)
+
+        #initialization of checkbox using theme-based configs
+        self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
 
 
-class CustomLabel(tk.Label):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
+transaction_list = CustomFrame(root, width=300, height=400)
+transaction_list.config()
+transaction_list.place(x=5, y=5)
 
-        # initialization of entry using color theme-based configs
-        self.config(bg="#E0E0E0", fg='black', font=("Arial", 14))
+total_expenses = CustomFrame(root, width=485, height=400)
+total_expenses.config()
+total_expenses.place(x=310, y=5)
 
+radar_chart= CustomFrame(root, width=392.5, height=300)
+radar_chart.place(x=5, y=410)
 
+stacked_bar_chart = CustomFrame(root, width=392.5, height=300)
+stacked_bar_chart.place(x=402.5, y=410)
+
+hourly_or_salary = CustomCheckButton(root, width=25, height=25)
+hourly_or_salary.place(x=)
 
 root.mainloop()
