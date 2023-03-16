@@ -30,6 +30,34 @@ class CustomCheckButton(tk.Checkbutton):
         self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
 
 
+class PlaceholderEntry(tk.Entry):
+    def __init__(self, master=None, placeholder="", color='grey', **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.placeholder = placeholder
+        self.placeholder_color = color
+        self.default_fg_color = self['fg']
+
+        self.bind("<FocusIn>", self._on_focus_in)
+        self.bind("<FocusOut>", self._on_focus_out)
+
+        self._show_placeholder()
+
+    def _on_focus_in(self, event):
+        if self['fg'] == self.placeholder_color:
+            self.delete(0, tk.END)
+            self.config(fg=self.default_fg_color)
+
+    def _on_focus_out(self, event):
+        if not self.get():
+            self._show_placeholder()
+
+    def _show_placeholder(self):
+        self.delete(0, tk.END)
+        self.insert(0, self.placeholder)
+        self.config(fg=self.placeholder_color)
+
+
 transaction_list = CustomFrame(root, width=300, height=400)
 transaction_list.config()
 transaction_list.place(x=5, y=5)
@@ -45,6 +73,5 @@ stacked_bar_chart = CustomFrame(root, width=392.5, height=300)
 stacked_bar_chart.place(x=402.5, y=410)
 
 hourly_or_salary = CustomCheckButton(root, width=25, height=25)
-hourly_or_salary.place(x=)
 
 root.mainloop()
