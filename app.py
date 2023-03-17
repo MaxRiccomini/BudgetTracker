@@ -1,10 +1,14 @@
 import tkinter as tk
+import tkinter.font
 import time
 from tkinter import *
 import pandas as pd
 import matplotlib
 
-root = tk.Tk()
+root = tk.Tk()  # create root window
+
+sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
+
 root.title("Budget Tracker")
 root.geometry("800x1000")
 
@@ -13,7 +17,14 @@ class CustomButton(tk.Button):
         super().__init__(master, **kwargs)
 
         # initialization of button using theme-based configs
-        self.config(bg="#003366", fg='#003366', font=("Arial", 14))
+        self.config(bg="white", fg='black', font=sf_pro_font)
+
+class CustomLabel(tk.Label):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+
+        #initialization of label using theme-based configs
+        self.config(root, font=sf_pro_font)
 
 class CustomFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -23,11 +34,11 @@ class CustomFrame(tk.Frame):
         self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
 
 class CustomCheckButton(tk.Checkbutton):
-    def __init(self, master=None, **kwargs):
-        super().init(master, **kwargs)
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
 
         #initialization of checkbox using theme-based configs
-        self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
+        self.config(activebackground="black")
 
 
 class PlaceholderEntry(tk.Entry):
@@ -67,12 +78,20 @@ total_expenses = CustomFrame(root, width=485, height=400)
 total_expenses.config()
 total_expenses.place(x=310, y=5)
 
-radar_chart= CustomFrame(root, width=392.5, height=300)
+radar_chart= CustomFrame(root, width=392.5, height=400)
 radar_chart.place(x=5, y=410)
 
-stacked_bar_chart = CustomFrame(root, width=392.5, height=300)
+stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=410)
 
-hourly_or_salary = CustomCheckButton(root, width=25, height=25)
+salary_entry = PlaceholderEntry(root, placeholder="Enter Monthly Net: ", color="black", font=sf_pro_font)
+salary_entry.config()
+salary_entry.place(x=5, y=725)
+
+new_expense = CustomButton(root, text="New Expense")
+new_expense.place(x=600, y=950)
+
+new_transaction = CustomButton(root, text="New Transaction")
+new_transaction.place(x=350, y=950)
 
 root.mainloop()
