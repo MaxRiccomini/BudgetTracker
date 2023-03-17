@@ -4,6 +4,7 @@ import matplotlib
 
 matplotlib.use('TkAgg')
 
+
 def _invert(x, limits):
     return limits[1] - (x - limits[0])
 
@@ -48,14 +49,11 @@ class ComplexRadar():
             gridlabel = ["{}".format(round(x, 2))
                          for x in grid]
             if ranges[i][0] > ranges[i][1]:
-                grid = grid[::-1]  # hack to invert grid
-                # gridlabels aren't reversed
-            gridlabel[0] = ""  # clean up origin
+                grid = grid[::-1]
+            gridlabel[0] = ""
             ax.set_rgrids(grid, labels=gridlabel,
                           angle=angles[i])
-            # ax.spines["polar"].set_visible(False)
             ax.set_ylim(*ranges[i])
-        # variables for plotting
         self.angle = np.deg2rad(np.r_[angles, angles[0]])
         self.ranges = ranges
         self.ax = axes[0]
@@ -70,7 +68,7 @@ class ComplexRadar():
 
 
 if __name__ == "__main__":
-    # example data
+    # example data will have to be adapted then, can take pd sets, so we can just use that
     variables = ("Rattlesnake", "Kratom", "Crack Rock",
                  "Shopping", "Food", "More Kratom", "Car")
     data = (190, 140, 100,
@@ -78,7 +76,6 @@ if __name__ == "__main__":
     ranges = [(1, 200), (1, 200), (1, 200),
               (1, 200), (1, 200), (1, 200), (1, 200)]
 
-    # plotting
     fig1 = plt.figure(figsize=(6, 6))
     radar = ComplexRadar(fig1, variables, ranges)
     radar.plot(data)
