@@ -4,6 +4,10 @@ import time
 from tkinter import *
 import pandas as pd
 import matplotlib
+import json
+from bar import *
+from radar import *
+from scroll import *
 
 root = tk.Tk()  # create root window
 
@@ -70,23 +74,23 @@ class PlaceholderEntry(tk.Entry):
 
 
 
-transaction_list = CustomFrame(root, width=300, height=400)
+transaction_list = CustomFrame(root, width=300, height=450)
 transaction_list.config()
 transaction_list.place(x=5, y=5)
 
-total_expenses = CustomFrame(root, width=485, height=400)
+total_expenses = CustomFrame(root, width=485, height=450)
 total_expenses.config()
 total_expenses.place(x=310, y=5)
 
 radar_chart= CustomFrame(root, width=392.5, height=400)
-radar_chart.place(x=5, y=410)
+radar_chart.place(x=5, y=460)
 
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
-stacked_bar_chart.place(x=402.5, y=410)
+stacked_bar_chart.place(x=402.5, y=460)
 
-salary_entry = PlaceholderEntry(root, placeholder="Enter Monthly Net: ", color="black", font=sf_pro_font)
+salary_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
 salary_entry.config()
-salary_entry.place(x=5, y=725)
+salary_entry.place(x=5, y=875)
 
 new_expense = CustomButton(root, text="New Expense")
 new_expense.place(x=600, y=950)
