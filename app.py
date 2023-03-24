@@ -2,12 +2,12 @@ import tkinter as tk
 import tkinter.font
 import time
 from tkinter import *
+from tkinter import ttk
+
 import pandas as pd
 import matplotlib
 import json
-from bar import *
-from radar import *
-from scroll import *
+
 
 root = tk.Tk()  # create root window
 
@@ -15,6 +15,8 @@ sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
 
 root.title("Budget Tracker")
 root.geometry("800x1000")
+
+
 
 class CustomButton(tk.Button):
     def __init__(self, master=None, **kwargs):
@@ -28,7 +30,7 @@ class CustomLabel(tk.Label):
         super().__init__(master, **kwargs)
 
         #initialization of label using theme-based configs
-        self.config(root, font=sf_pro_font)
+        self.config(font=sf_pro_font, bg="#E0E0E0")
 
 class CustomFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -39,7 +41,7 @@ class CustomFrame(tk.Frame):
 
 class CustomCheckButton(tk.Checkbutton):
     def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
+        super().__init__(master, font=sf_pro_font, **kwargs)
 
         #initialization of checkbox using theme-based configs
         self.config(activebackground="black")
@@ -72,14 +74,68 @@ class PlaceholderEntry(tk.Entry):
         self.insert(0, self.placeholder)
         self.config(fg=self.placeholder_color)
 
+expense_list = []
+transaction_list = []
+options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
+transaction_options = ["Checking", "Savings"]
+selected_option = tk.StringVar(value=options[0])
 
 
-transaction_list = CustomFrame(root, width=300, height=450)
-transaction_list.config()
-transaction_list.place(x=5, y=5)
+# opens pop up for new transaction
+def open_new_expense():
+    expense_win = Toplevel(root)
+    expense_win.config(bg="#E0E0E0")
+    expense_win.geometry("600x400")
+    expense_win.title("New Expense")
+    CustomLabel(expense_win, text="New Expense").place(x=185, y=10)
+    new_expense_amount = PlaceholderEntry(expense_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
+    new_expense_amount.place(x=5, y=75)
+
+
+    def save_expense():
+        expense_amount = new_expense_amount.get()
+        expense_type = selected_option.get()
+        expense = "Amount: " + expense_amount + ", Type: " + expense_type
+        expense_list.append(expense)
+        print(expense_list)
+        expense_win.destroy()
+
+    done_button = CustomButton(expense_win, text="Done", command= lambda: save_expense())
+    done_button.place(x=265, y=350)
+
+    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font)
+    custom_dropDown.place(x=5, y=175)
+
+
+def open_new_transaction():
+    transaction_win = Toplevel(root)
+    transaction_win.config(bg="#E0E0E0")
+    transaction_win.geometry("600x400")
+    transaction_win.title("New Expense")
+    CustomLabel(transaction_win, text="New Expense").place(x=185, y=10)
+    new_transaction = PlaceholderEntry(transaction_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
+    new_transaction.place(x=5, y=75)
+
+    def save_transaction():
+        transaction_amount = new_transaction.get()
+        transaction = "Amount: " + transaction_amount
+        expense_list.append(transaction)
+        print(transaction_list)
+        transaction_win.destroy()
+
+    done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
+    done_button.place(x=265, y=350)
+
+
+
+# Main UI
+transaction_list_frame = CustomFrame(root, width=300, height=450)
+transaction_list_frame.place(x=5, y=5)
+
+new_transaction_label = CustomLabel(root, text="Transactions")
+new_transaction_label.place(x=60, y=10)
 
 total_expenses = CustomFrame(root, width=485, height=450)
-total_expenses.config()
 total_expenses.place(x=310, y=5)
 
 radar_chart= CustomFrame(root, width=392.5, height=400)
@@ -88,14 +144,18 @@ radar_chart.place(x=5, y=460)
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
 
-salary_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
-salary_entry.config()
-salary_entry.place(x=5, y=875)
+monthly_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
+monthly_entry.place(x=5, y=875)
 
-new_expense = CustomButton(root, text="New Expense")
+new_expense = CustomButton(root, text="New Expense", command= lambda: open_new_expense())
 new_expense.place(x=600, y=950)
 
-new_transaction = CustomButton(root, text="New Transaction")
-new_transaction.place(x=350, y=950)
+new_transaction_btn = CustomButton(root, text="New Transaction", command= lambda: open_new_transaction())
+new_transaction_btn.place(x=350, y=950)
+
+monthly_button = CustomButton(root, text="Enter")
+monthly_button.place(x=377.5, y=877.5)
+
+
 
 root.mainloop()
