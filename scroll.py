@@ -3,6 +3,7 @@ from tkinter import *
 
 root = tk.Tk()
 
+
 categories = ['Mortgage/Rent',
               'Car',
               'Food',

@@ -61,6 +61,7 @@ while current < len(categories):
 
 width = .5
 
+
 rects1 = ax.bar("Mortgage/Rent", budgets[0], width)
 rects2 = ax.bar("Car", budgets[1], width)
 rects3 = ax.bar("Food", budgets[2], width)
