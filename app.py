@@ -14,8 +14,9 @@ root = tk.Tk()  # create root window
 sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
 sf_pro_font_dropdown = tkinter.font.Font(family='SF Pro Text', size=16)
 current_date = datetime.date.today()
-current_date = current_date.strftime(("%m-%d-%Y"))
-formatted_date = current_date.strftime("%b %d, %Y")
+current_date = current_date.strftime("%m-%d-%Y")
+formatted_date = datetime.date.today()
+formatted_date = formatted_date.strftime('%b %d,%Y')
 
 root.title("Budget Tracker")
 root.geometry("800x1000")
@@ -119,7 +120,7 @@ def open_new_expense():
         expense_type = selected_option.get()
         expense_list.append(expense_amount)
         expense_type_list.append(expense_type)
-        expense_date_list.append(date_label)
+        expense_date_list.append(current_date)
         print(expense_list + expense_type_list + expense_date_list)
         expense_win.destroy()
 
@@ -140,6 +141,7 @@ def open_new_transaction():
         transaction_amount = new_transaction.get()
         transaction = "Amount: " + transaction_amount
         transaction_list.append(transaction)
+        transaction_date_list.append(current_date)
         print(transaction_list)
         transaction_win.destroy()
 
