@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.font
-import time
+import datetime
 from tkinter import *
 from tkinter import ttk
 
@@ -12,6 +12,10 @@ import json
 root = tk.Tk()  # create root window
 
 sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
+sf_pro_font_dropdown = tkinter.font.Font(family='SF Pro Text', size=16)
+current_date = datetime.date.today()
+current_date = current_date.strftime(("%m-%d-%Y"))
+formatted_date = current_date.strftime("%b %d, %Y")
 
 root.title("Budget Tracker")
 root.geometry("800x1000")
@@ -23,7 +27,14 @@ class CustomButton(tk.Button):
         super().__init__(master, **kwargs)
 
         # initialization of button using theme-based configs
-        self.config(bg="white", fg='black', font=sf_pro_font)
+        self.config(bg="white", fg='black', font=sf_pro_font, highlightbackground="#E0E0E0", highlightcolor="#E0E0E0")
+
+class CustomEntry(tk.Entry):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+
+        #init of entry using theme based configs
+        self.config(font=sf_pro_font, bg="#E0E0E0")
 
 class CustomLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
@@ -75,7 +86,13 @@ class PlaceholderEntry(tk.Entry):
         self.config(fg=self.placeholder_color)
 
 expense_list = []
+expense_type_list = []
+expense_date_list = []
+
 transaction_list = []
+transaction_choice_list = []
+transaction_date_list = []
+
 options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
 transaction_options = ["Checking", "Savings"]
 selected_option = tk.StringVar(value=options[0])
@@ -87,24 +104,27 @@ def open_new_expense():
     expense_win.config(bg="#E0E0E0")
     expense_win.geometry("600x400")
     expense_win.title("New Expense")
-    CustomLabel(expense_win, text="New Expense").place(x=185, y=10)
+    new_expense_label = CustomLabel(expense_win, text="New Expense")
     new_expense_amount = PlaceholderEntry(expense_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
+    custom_dropDown = ttk.Combobox(expense_win, state="readonly", value=options, font=sf_pro_font_dropdown)
+    custom_dropDown.config(width= 20, height=6)
+    date_label = CustomLabel(expense_win, text="Date: " + str(formatted_date))
+    new_expense_label.place(x=185, y=10)
     new_expense_amount.place(x=5, y=75)
-
+    custom_dropDown.place(x=5, y=175)
+    date_label.place(x=5, y=250)
 
     def save_expense():
         expense_amount = new_expense_amount.get()
         expense_type = selected_option.get()
-        expense = "Amount: " + expense_amount + ", Type: " + expense_type
-        expense_list.append(expense)
-        print(expense_list)
+        expense_list.append(expense_amount)
+        expense_type_list.append(expense_type)
+        expense_date_list.append(date_label)
+        print(expense_list + expense_type_list + expense_date_list)
         expense_win.destroy()
 
     done_button = CustomButton(expense_win, text="Done", command= lambda: save_expense())
     done_button.place(x=265, y=350)
-
-    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font)
-    custom_dropDown.place(x=5, y=175)
 
 
 def open_new_transaction():
@@ -112,14 +132,14 @@ def open_new_transaction():
     transaction_win.config(bg="#E0E0E0")
     transaction_win.geometry("600x400")
     transaction_win.title("New Expense")
-    CustomLabel(transaction_win, text="New Expense").place(x=185, y=10)
+    CustomLabel(transaction_win, text="New Transaction").place(x=185, y=10)
     new_transaction = PlaceholderEntry(transaction_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
     new_transaction.place(x=5, y=75)
 
     def save_transaction():
         transaction_amount = new_transaction.get()
         transaction = "Amount: " + transaction_amount
-        expense_list.append(transaction)
+        transaction_list.append(transaction)
         print(transaction_list)
         transaction_win.destroy()
 
