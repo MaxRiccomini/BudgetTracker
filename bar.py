@@ -1,5 +1,7 @@
 import matplotlib
+from matplotlib import pyplot as plt
 import numpy
+import pandas as pd
 import tkinter as Tk
 
 categories = ['Mortgage/Rent',
@@ -53,25 +55,13 @@ root = Tk.Tk()
 f = Figure(figsize=(5,4), dpi=100)
 ax = f.add_subplot(111)
 
-
-current = 0
-while current < len(categories):
-
-     current += 1
-
-width = .5
-
-
-rects1 = ax.bar("Mortgage/Rent", budgets[0], width)
-rects2 = ax.bar("Car", budgets[1], width)
-rects3 = ax.bar("Food", budgets[2], width)
-rects4 = ax.bar("Entertainment", budgets[3], width)
+rects1 = ax.bar("Mortgage/Rent", float(budgets[0]), width)
+rects2 = ax.bar("Car", float(budgets[1]), width)
+rects3 = ax.bar("Food", float(budgets[2]), width)
+rects4 = ax.bar("Entertainment", float(budgets[3]), width)
 
 canvas = FigureCanvasTkAgg(f, master=root)
 canvas.draw()
 canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
-
-ax.invert_xaxis()
-ax.invert_yaxis()
 
 Tk.mainloop()

@@ -16,8 +16,6 @@ sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
 root.title("Budget Tracker")
 root.geometry("800x1000")
 
-
-
 class CustomButton(tk.Button):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -129,6 +127,7 @@ def open_new_transaction():
 
 
 # Main UI
+
 transaction_list_frame = CustomFrame(root, width=300, height=450)
 transaction_list_frame.place(x=5, y=5)
 
@@ -156,6 +155,51 @@ new_transaction_btn.place(x=350, y=950)
 monthly_button = CustomButton(root, text="Enter")
 monthly_button.place(x=377.5, y=877.5)
 
+
+def scrolllistbox(event):
+    lst3.yview_scroll(int(-4 * (event.delta / 120)), "units")
+    lst2.yview_scroll(int(-4 * (event.delta / 120)), "units")
+    lst1.yview_scroll(int(-4 * (event.delta / 120)), "units")
+
+
+scrollbar = Scrollbar(root)
+# scrollbar.pack(side=RIGHT, fill=Y)
+
+
+def def_listbox1():
+    listbox = Listbox(None)
+    listbox.insert(END, *categories)
+    listbox.pack(expand=1, fill="both", side="left")
+    return listbox
+
+
+def def_listbox2():
+    listbox = Listbox(None)
+    listbox.insert(END, *costs)
+    listbox.pack(expand=1, fill="both", side="left")
+    return listbox
+
+
+def def_listbox3():
+    listbox = Listbox(None)
+    listbox.insert(END, *dates)
+    listbox.pack(expand=1, fill="both", side="left")
+    return listbox
+
+
+frame1 = tk.Frame(root)
+# frame1.pack(expand=0, fill="both")
+
+lst1 = def_listbox1()
+lst2 = def_listbox2()
+lst3 = def_listbox3()
+
+lst1.config(yscrollcommand=scrollbar.set)
+lst1.bind("<MouseWheel>", scrolllistbox)
+lst2.config(yscrollcommand=scrollbar.set)
+lst2.bind("<MouseWheel>", scrolllistbox)
+lst3.config(yscrollcommand=scrollbar.set)
+lst3.bind("<MouseWheel>", scrolllistbox)
 
 
 root.mainloop()

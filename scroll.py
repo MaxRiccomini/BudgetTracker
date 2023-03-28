@@ -3,7 +3,6 @@ from tkinter import *
 
 root = tk.Tk()
 
-
 categories = ['Mortgage/Rent',
               'Car',
               'Food',
@@ -46,58 +45,52 @@ budgets = ['700.00',
            '500.00'
            ]
 
-root.title("Budget List")
-root.geometry("400x400")
+#root.title("Budget List")
+#root.geometry("400x100")
 
 
-def scrolllistbox3(event):
+def scrolllistbox(event):
     lst3.yview_scroll(int(-4 * (event.delta / 120)), "units")
-
-
-def scrolllistbox2(event):
     lst2.yview_scroll(int(-4 * (event.delta / 120)), "units")
-
-
-def scrolllistbox1(event):
     lst1.yview_scroll(int(-4 * (event.delta / 120)), "units")
 
 
 scrollbar = Scrollbar(root)
-scrollbar.pack(side=RIGHT, fill=Y)
+# scrollbar.pack(side=RIGHT, fill=Y)
 
 
 def def_listbox1():
     listbox = Listbox(None)
     listbox.insert(END, *categories)
-    listbox.pack(expand=1, fill="both", side="left")
+    # listbox.pack(expand=1, fill="both", side="left")
     return listbox
 
 
 def def_listbox2():
     listbox = Listbox(None)
     listbox.insert(END, *costs)
-    listbox.pack(expand=1, fill="both", side="left")
+    # listbox.pack(expand=1, fill="both", side="left")
     return listbox
 
 
 def def_listbox3():
     listbox = Listbox(None)
     listbox.insert(END, *dates)
-    listbox.pack(expand=1, fill="both", side="left")
+    # listbox.pack(expand=1, fill="both", side="left")
     return listbox
 
 
 frame1 = tk.Frame(root)
-frame1.pack(expand=0, fill="both")
+# frame1.pack(expand=0, fill="both")
 
 lst1 = def_listbox1()
 lst2 = def_listbox2()
 lst3 = def_listbox3()
 
 lst1.config(yscrollcommand=scrollbar.set)
-lst1.bind("<MouseWheel>", scrolllistbox2)
+lst1.bind("<MouseWheel>", scrolllistbox)
 lst2.config(yscrollcommand=scrollbar.set)
-lst2.bind("<MouseWheel>", scrolllistbox2)
+lst2.bind("<MouseWheel>", scrolllistbox)
 lst3.config(yscrollcommand=scrollbar.set)
-lst3.bind("<MouseWheel>", scrolllistbox1)
+lst3.bind("<MouseWheel>", scrolllistbox)
 root.mainloop()
