@@ -201,5 +201,4 @@ lst2.bind("<MouseWheel>", scrolllistbox)
 lst3.config(yscrollcommand=scrollbar.set)
 lst3.bind("<MouseWheel>", scrolllistbox)
 
-
 root.mainloop()
