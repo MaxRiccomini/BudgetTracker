@@ -18,9 +18,10 @@ current_date = current_date.strftime("%m-%d-%Y")
 formatted_date = datetime.date.today()
 formatted_date = formatted_date.strftime('%b %d,%Y')
 
+
 root.title("Budget Tracker")
 root.geometry("800x1000")
-
+root.iconbitmap("icon.ico")
 
 
 class CustomButton(tk.Button):
@@ -148,26 +149,28 @@ def open_new_transaction():
     done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
     done_button.place(x=265, y=350)
 
+monthly_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
+monthly_entry.place(x=5, y=875)
 
 
 # Main UI
 transaction_list_frame = CustomFrame(root, width=300, height=450)
 transaction_list_frame.place(x=5, y=5)
 
-new_transaction_label = CustomLabel(root, text="Transactions")
+new_transaction_label = CustomLabel(transaction_list_frame, text="Transactions")
 new_transaction_label.place(x=60, y=10)
 
 total_expenses = CustomFrame(root, width=485, height=450)
 total_expenses.place(x=310, y=5)
+
+expense_label = CustomLabel(total_expenses, text="Expenses")
+expense_label.place(x=180, y=10)
 
 radar_chart= CustomFrame(root, width=392.5, height=400)
 radar_chart.place(x=5, y=460)
 
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
-
-monthly_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
-monthly_entry.place(x=5, y=875)
 
 new_expense = CustomButton(root, text="New Expense", command= lambda: open_new_expense())
 new_expense.place(x=600, y=950)
