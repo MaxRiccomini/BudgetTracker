@@ -8,7 +8,6 @@ matplotlib.use('TkAgg')
 def _invert(x, limits):
     return limits[1] - (x - limits[0])
 
-
 def _scale_data(data, ranges):
     for d, (y1, y2) in zip(data[1:], ranges[1:]):
         assert (y1 <= d <= y2) or (y2 <= d <= y1)

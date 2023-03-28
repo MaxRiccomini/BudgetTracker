@@ -82,7 +82,6 @@ def def_listbox3():
 
 frame1 = tk.Frame(root)
 # frame1.pack(expand=0, fill="both")
-
 lst1 = def_listbox1()
 lst2 = def_listbox2()
 lst3 = def_listbox3()

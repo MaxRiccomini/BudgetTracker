@@ -45,7 +45,6 @@ budgets = ['700.00',
            '400.00',
            '500.00'
            ]
-
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
