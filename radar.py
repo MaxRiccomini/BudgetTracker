@@ -1,12 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+import tkinter as Tk
 
 matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
+root = Tk.Tk()
 
 
 def _invert(x, limits):
     return limits[1] - (x - limits[0])
+
 
 def _scale_data(data, ranges):
     for d, (y1, y2) in zip(data[1:], ranges[1:]):
@@ -67,16 +73,22 @@ class ComplexRadar():
 
 
 if __name__ == "__main__":
-    # example data will have to be adapted then, can take pd sets, so we can just use that
-    variables = ("Rattlesnake", "Kratom", "Crack Rock",
-                 "Shopping", "Food", "More Kratom", "Car")
+    variables = ('Mortgage/Rent',
+                 'Car',
+                 'Food',
+                 'Entertainment',)
     data = (190, 140, 100,
-            150, 200, 100, 90)
-    ranges = [(1, 200), (1, 200), (1, 200),
-              (1, 200), (1, 200), (1, 200), (1, 200)]
+            150)
+    ranges = [(1, 700), (1, 300), (1, 400),
+              (1, 500)]
 
-    fig1 = plt.figure(figsize=(6, 6))
+    fig1 = Figure(figsize=(6, 6))
     radar = ComplexRadar(fig1, variables, ranges)
     radar.plot(data)
-    radar.fill(data, alpha=0.2)
-    plt.show()
+    radar.fill(data, alpha=1)
+
+    canvas = FigureCanvasTkAgg(fig1, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+
+    Tk.mainloop()

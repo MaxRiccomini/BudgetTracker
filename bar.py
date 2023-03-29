@@ -1,7 +1,5 @@
 import matplotlib
-from matplotlib import pyplot as plt
 import numpy
-import pandas as pd
 import tkinter as Tk
 
 categories = ['Mortgage/Rent',
@@ -45,6 +43,7 @@ budgets = ['700.00',
            '400.00',
            '500.00'
            ]
+
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -53,6 +52,10 @@ root = Tk.Tk()
 
 f = Figure(figsize=(5,4), dpi=100)
 ax = f.add_subplot(111)
+
+data = (20, 35, 30, 35, 27)
+
+width = .5
 
 rects1 = ax.bar("Mortgage/Rent", float(budgets[0]), width)
 rects2 = ax.bar("Car", float(budgets[1]), width)
