@@ -13,6 +13,7 @@ import json
 root = tk.Tk()  # create root window
 
 sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
+sf_pro_font_mini = tkinter.font.Font(family='SF Pro Text', size=14)
 current_date = datetime.date.today()
 current_date.strftime("%m%d%y")
 print(current_date)
@@ -84,6 +85,7 @@ transaction_type_list = []
 options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
 transaction_options = ["Checking", "Savings"]
 selected_option = tk.StringVar(value=options[0])
+selected_option = tk.StringVar(value=transaction_options[0])
 
 
 # opens pop up for new transaction
@@ -109,7 +111,7 @@ def open_new_expense():
     done_button = CustomButton(expense_win, text="Done", command= lambda: save_expense())
     done_button.place(x=265, y=350)
 
-    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font)
+    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font_mini, state="readonly")
     custom_dropDown.place(x=5, y=175)
 
 
@@ -118,22 +120,24 @@ def open_new_transaction():
     transaction_win.config(bg="#E0E0E0")
     transaction_win.geometry("600x400")
     transaction_win.title("New Expense")
-    CustomLabel(transaction_win, text="New Expense").place(x=185, y=10)
+    CustomLabel(transaction_win, text="New Transaction").place(x=185, y=10)
     new_transaction = PlaceholderEntry(transaction_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
     new_transaction.place(x=5, y=75)
 
     def save_transaction():
         transaction_amount = new_transaction.get()
         transaction = transaction_amount
+        transaction_choice = selected_option.get()
         transaction_list.append(transaction)
-
-        print(transaction_list)
+        transaction_type_list.append(transaction_choice)
+        print(transaction_list + transaction_type_list)
         transaction_win.destroy()
 
     done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
     done_button.place(x=265, y=350)
 
-
+    custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini, state="readonly")
+    custom_dropDown.place(x=5, y=175)
 
 # Main UI
 
@@ -179,7 +183,7 @@ def def_listbox1():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *expense_type_list)
     listbox.grid(row=0, column=0)
-    listbox.config(width=11, height=26, font=sf_pro_font)
+    listbox.config(width=11, height=26, font=sf_pro_font_mini)
     return listbox
 
 
@@ -187,7 +191,7 @@ def def_listbox2():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *expense_list)
     listbox.grid(row=0, column=1)
-    listbox.config(width=11, height=26, font=sf_pro_font)
+    listbox.config(width=11, height=26, font=sf_pro_font_mini)
     return listbox
 
 
@@ -195,7 +199,7 @@ def def_listbox3():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *date_list)
     listbox.grid(row=0, column=2)
-    listbox.config(width=11, height=26, font=sf_pro_font)
+    listbox.config(width=11, height=26, font=sf_pro_font_mini)
     return listbox
 
 
