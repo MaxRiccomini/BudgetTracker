@@ -275,6 +275,7 @@ class ComplexRadar():
         self.ranges = ranges
         self.ax = axes[0]
 
+
     def plot(self, data, *args, **kw):
         sdata = _scale_data(data, self.ranges)
         self.ax.plot(self.angle, np.r_[sdata, sdata[0]], *args, **kw)
