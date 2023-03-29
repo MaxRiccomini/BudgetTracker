@@ -128,6 +128,7 @@ def open_new_transaction():
 
 
 
+
 # Main UI
 transaction_list_frame = CustomFrame(root, width=300, height=450)
 transaction_list_frame.place(x=5, y=5)
