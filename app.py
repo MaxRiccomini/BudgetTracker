@@ -140,8 +140,8 @@ def open_new_transaction():
 transaction_list_frame = CustomFrame(root, width=300, height=450)
 transaction_list_frame.place(x=5, y=5)
 
-new_transaction_label = CustomLabel(root, text="Transactions")
-new_transaction_label.place(x=60, y=10)
+#new_transaction_label = CustomLabel(root, text="Transactions")
+#new_transaction_label.place(x=60, y=10)
 
 total_expenses = CustomFrame(root, width=485, height=450)
 total_expenses.place(x=310, y=5)
@@ -178,28 +178,27 @@ scrollbar = Scrollbar(root)
 def def_listbox1():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *expense_type_list)
-    listbox.place(x=5, y=5)
-    listbox.config(width=100, height=200)
+    listbox.grid(row=0, column=0)
+    listbox.config(width=11, height=26, font=sf_pro_font)
     return listbox
 
 
 def def_listbox2():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *expense_list)
-    listbox.place(x=25, y=5)
-    listbox.config(width=100, height=200)
+    listbox.grid(row=0, column=1)
+    listbox.config(width=11, height=26, font=sf_pro_font)
     return listbox
 
 
 def def_listbox3():
     listbox = Listbox(transaction_list_frame)
     listbox.insert(END, *date_list)
-    listbox.place(x=45, y=5)
-    listbox.config(width=100, height=200)
+    listbox.grid(row=0, column=2)
+    listbox.config(width=11, height=26, font=sf_pro_font)
     return listbox
 
 
-frame1 = tk.Frame(root)
 # frame1.pack(expand=0, fill="both")
 
 lst1 = def_listbox1()
