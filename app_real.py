@@ -59,6 +59,7 @@ dates = ['3/11/2023',
 root = tk.Tk()  # create root window
 
 sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
+sf_pro_font_mini = tkinter.font.Font(family='SF Pro Text', size=14)
 
 current_date = datetime.date.today()
 formatted_date = datetime.date.today().strftime("%m%d%y")
@@ -88,7 +89,6 @@ class CustomFrame(tk.Frame):
         super().__init__(master, **kwargs)
 
         # initiliazation of frame using theme-based configs
-        self.config(bg="#E0E0E0", highlightbackground="#b0b0b0")
 
 
 class CustomCheckButton(tk.Checkbutton):
@@ -145,21 +145,21 @@ selected_transaction_option = tk.StringVar(value=transaction_options[0])
 def def_listbox1():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_type_list)
-    listbox.place(x=5, y=5)
+    listbox.place(x=5, y=50)
     return listbox
 
 
 def def_listbox2():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_list)
-    listbox.place(x=100, y=5)
+    listbox.place(x=100, y=50)
     return listbox
 
 
 def def_listbox3():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_date_list)
-    listbox.place(x=195, y=5)
+    listbox.place(x=195, y=50)
     return listbox
 
 
@@ -189,7 +189,7 @@ def open_new_expense():
     done_button = CustomButton(expense_win, text="Done", command=lambda: save_expense())
     done_button.place(x=265, y=350)
 
-    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font)
+    custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font_mini)
     custom_dropDown.place(x=5, y=175)
 
 
@@ -202,7 +202,7 @@ def open_new_transaction():
     new_transaction = PlaceholderEntry(transaction_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
     new_transaction.place(x=5, y=75)
 
-    custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font)
+    custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini)
     custom_dropDown.place(x=5, y=175)
 
     def save_transaction():
@@ -223,14 +223,17 @@ def open_new_transaction():
 
 # Main UI
 
-transaction_list_frame = CustomFrame(root, width=300, height=450)
-transaction_list_frame.place(x=5, y=5)
+transaction_list_frame = CustomFrame(root, width=350, height=450)
+transaction_list_frame.place(x=0, y=5)
 
 new_transaction_label = CustomLabel(root, text="Transactions")
 new_transaction_label.place(x=60, y=10)
 
-total_expenses = CustomFrame(root, width=485, height=450)
+total_expenses = CustomFrame(root, width=450, height=450)
 total_expenses.place(x=310, y=5)
+
+new_expenses_label = CustomLabel(total_expenses, text="Expenses")
+new_expenses_label.place(x=200, y=10)
 
 radar_chart = CustomFrame(root, width=392.5, height=400)
 radar_chart.place(x=5, y=460)
@@ -238,7 +241,7 @@ radar_chart.place(x=5, y=460)
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
 
-monthly_entry = PlaceholderEntry(root, placeholder="Enter Monthly: ", color="black", font=sf_pro_font)
+monthly_entry = tk.Entry(root, font=sf_pro_font)
 monthly_entry.place(x=5, y=875)
 
 new_expense = CustomButton(root, text="New Expense", command=lambda: open_new_expense())
@@ -247,7 +250,7 @@ new_expense.place(x=600, y=950)
 new_transaction_btn = CustomButton(root, text="New Transaction", command=lambda: open_new_transaction())
 new_transaction_btn.place(x=350, y=950)
 
-monthly_button = CustomButton(root, text="Enter")
+monthly_button = CustomButton(root, text="Enter Monthly")
 monthly_button.place(x=377.5, y=877.5)
 
 # BAR CHART BEGINS HERE
