@@ -186,8 +186,8 @@ def open_new_expense():
         def_listbox5()
         def_listbox6()
 
-        data = (int(mortgageTotal), int(carTotal), int(foodTotal),
-                int(entertainTotal))
+        data = (float(mortgageTotal), float(carTotal), float(foodTotal),
+                float(entertainTotal))
         radar.plot(data)
         radar.fill(data, alpha=1)
         canvas = FigureCanvasTkAgg(fig1, master=root)
