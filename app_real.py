@@ -9,7 +9,6 @@ import matplotlib
 from matplotlib import pyplot
 import json
 import datetime
-
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -19,42 +18,6 @@ budgets = ['700.00',
            '400.00',
            '500.00'
            ]
-
-categories = ['Mortgage/Rent',
-              'Car',
-              'Food',
-              'Entertainment',
-              'Entertainment',
-              'Food',
-              'Food',
-              'Food',
-              'Car',
-              'Mortgage/Rent'
-              ]
-
-costs = ['20.74',
-         '15.57',
-         '40.11',
-         '49.97',
-         '112.48',
-         '45.17',
-         '17.76',
-         '147.84',
-         '420.69',
-         '11.68'
-         ]
-
-dates = ['3/11/2023',
-         '3/13/2023',
-         '3/17/2023',
-         '3/24/2023',
-         '3/24/2023',
-         '3/24/2023',
-         '3/25/2023',
-         '3/27/2023',
-         '3/27/2023',
-         '3/29/2023'
-         ]
 
 root = tk.Tk()  # create root window
 
@@ -131,12 +94,11 @@ expense_list = []
 expense_type_list = []
 expense_date_list = []
 
-
-
 transaction_list = []
 transaction_type_list = []
 transaction_date_list = []
 options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
+
 transaction_options = ["Checking", "Savings"]
 selected_option = tk.StringVar(value=options[0])
 selected_transaction_option = tk.StringVar(value=transaction_options[0])
@@ -145,28 +107,53 @@ selected_transaction_option = tk.StringVar(value=transaction_options[0])
 def def_listbox1():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_type_list)
-    listbox.place(x=5, y=50)
+    listbox.place(x=5, y=60)
     return listbox
 
 
 def def_listbox2():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_list)
-    listbox.place(x=100, y=50)
+    listbox.place(x=100, y=60)
     return listbox
 
 
 def def_listbox3():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_date_list)
-    listbox.place(x=195, y=50)
+    listbox.place(x=195, y=60)
+    return listbox
+
+def def_listbox4():
+    listbox = Listbox(None)
+    listbox.insert(END, *expense_type_list)
+    listbox.place(x=450, y=60)
+    return listbox
+
+def def_listbox5():
+    listbox = Listbox(None)
+    listbox.insert(END, *expense_list)
+    listbox.place(x=535, y=60)
+    return listbox
+
+def def_listbox6():
+    listbox = Listbox(None)
+    listbox.insert(END, *expense_date_list)
+    listbox.place(x=630, y=60)
     return listbox
 
 
 lst1 = def_listbox1()
 lst2 = def_listbox2()
 lst3 = def_listbox3()
+lst4 = def_listbox4()
+lst5 = def_listbox5()
+lst6 = def_listbox6()
 
+mortgageTotal = 1
+carTotal = 1
+foodTotal = 1
+entertainTotal = 1
 
 # opens pop up for new transaction
 def open_new_expense():
@@ -179,12 +166,77 @@ def open_new_expense():
     new_expense_amount.place(x=5, y=75)
 
     def save_expense():
+        global mortgageTotal, carTotal, foodTotal, entertainTotal
         expense_amount = new_expense_amount.get()
-        expense_type = selected_option.get()
+        expense_type = custom_dropDown.get()
         expense_list.append(expense_amount)
         expense_date_list.append(current_date)
         expense_type_list.append(expense_type)
+        if custom_dropDown.get() == "Mortgage/Rent":
+            mortgageTotal += int(expense_amount)
+        elif custom_dropDown.get() == "Car":
+            carTotal += int(expense_amount)
+        elif custom_dropDown.get() == "Food":
+            foodTotal += int(expense_amount)
+        else:
+            entertainTotal += int(expense_amount)
+
+        #update things
+        def_listbox4()
+        def_listbox5()
+        def_listbox6()
+
+        data = (int(mortgageTotal), int(carTotal), int(foodTotal),
+                int(entertainTotal))
+        radar.plot(data)
+        radar.fill(data, alpha=1)
+        canvas = FigureCanvasTkAgg(fig1, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().place(x=5, y=460)
+
+        f = Figure(figsize=(4,4), dpi=100)
+        ax = f.add_subplot(111)
+
+        width = .15
+
+        rects1 = ax.bar("Mortgage/Rent", float(mortgageTotal), width)
+        rects2 = ax.bar('    ', float(budgets[0]), width)
+        rects3 = ax.bar("Car", float(carTotal), width)
+        rects4 = ax.bar('   ', float(budgets[1]), width)
+        rects5 = ax.bar("Food", float(foodTotal), width)
+        rects6 = ax.bar('  ', float(budgets[2]), width)
+        rects7 = ax.bar("Entertainment", float(entertainTotal), width)
+        rects8 = ax.bar(' ', float(budgets[3]), width)
+
+        canvas = FigureCanvasTkAgg(f, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().place(x=402.5, y=460)
+
+        totalLabel = CustomLabel(root, text="Totals")
+        totalLabel.place(x=345, y=250)
+
+        mortgageTotalLabel = CustomLabel(root, text="Mortgage")
+        mortgageTotalLabel.place(x=45, y=320)
+        mortgageTotalLabelData = CustomLabel(root, text=mortgageTotal)
+        mortgageTotalLabelData.place(x=45, y=370)
+
+        carTotalLabel = CustomLabel(root, text="Car")
+        carTotalLabel.place(x=230, y=320)
+        carTotalLabelData = CustomLabel(root, text=carTotal)
+        carTotalLabelData.place(x=230, y=370)
+
+        foodTotalLabel = CustomLabel(root, text="Food")
+        foodTotalLabel.place(x=330, y=320)
+        foodTotalLabelData = CustomLabel(root, text=foodTotal)
+        foodTotalLabelData.place(x=330, y=370)
+
+        entertainTotalLabel = CustomLabel(root, text="Entertainment")
+        entertainTotalLabel.place(x=470, y=320)
+        entertainTotalLabelData = CustomLabel(root, text=entertainTotal)
+        entertainTotalLabelData.place(x=470, y=370)
+
         expense_win.destroy()
+
 
     done_button = CustomButton(expense_win, text="Done", command=lambda: save_expense())
     done_button.place(x=265, y=350)
@@ -252,22 +304,6 @@ new_transaction_btn.place(x=350, y=950)
 
 monthly_button = CustomButton(root, text="Enter Monthly")
 monthly_button.place(x=377.5, y=877.5)
-
-# BAR CHART BEGINS HERE
-
-f = Figure(figsize=(4, 4), dpi=100)
-ax = f.add_subplot(111)
-
-width = .7
-
-rects1 = ax.bar("Mortgage/Rent", float(budgets[0]), width)
-rects2 = ax.bar("Car", float(budgets[1]), width)
-rects3 = ax.bar("Food", float(budgets[2]), width)
-rects4 = ax.bar("Entertainment", float(budgets[3]), width)
-
-canvas = FigureCanvasTkAgg(f, master=root)
-canvas.draw()
-canvas.get_tk_widget().place(x=402.5, y=460)
 
 
 # RADAR CHART BEGINS HERE
@@ -338,37 +374,39 @@ if __name__ == "__main__":
                  'Car',
                  'Food',
                  'Entertainment',)
-    data = (190, 140, 100,
-            150)
-    ranges = [(1, 700), (1, 300), (1, 400),
-              (1, 500)]
+    data = (int(mortgageTotal), int(carTotal), int(foodTotal),
+            int(entertainTotal))
+    ranges = [(1, 700), (1, 500), (1, 300),
+              (1, 400)]
 
     fig1 = Figure(figsize=(4, 4))
     radar = ComplexRadar(fig1, variables, ranges)
-    radar.plot(data)
-    radar.fill(data, alpha=1)
-
-    canvas = FigureCanvasTkAgg(fig1, master=root)
-    canvas.draw()
-    canvas.get_tk_widget().place(x=5, y=460)
 
 
 def scrolllistbox(event):
     lst3.yview_scroll(int(-4 * (event.delta / 120)), "units")
     lst2.yview_scroll(int(-4 * (event.delta / 120)), "units")
     lst1.yview_scroll(int(-4 * (event.delta / 120)), "units")
+    lst4.yview_scroll(int(-4 * (event.delta / 120)), "units")
+    lst5.yview_scroll(int(-4 * (event.delta / 120)), "units")
+    lst6.yview_scroll(int(-4 * (event.delta / 120)), "units")
 
 
 scrollbar = Scrollbar(root)
-scrollbar.place(x=10, y=5)
 
 frame1 = tk.Frame(root)
-# frame1.pack(expand=0, fill="both")
 lst1.config(yscrollcommand=scrollbar.set)
 lst1.bind("<MouseWheel>", scrolllistbox)
 lst2.config(yscrollcommand=scrollbar.set)
 lst2.bind("<MouseWheel>", scrolllistbox)
 lst3.config(yscrollcommand=scrollbar.set)
 lst3.bind("<MouseWheel>", scrolllistbox)
+
+lst4.config(yscrollcommand=scrollbar.set)
+lst4.bind("<MouseWheel>", scrolllistbox)
+lst5.config(yscrollcommand=scrollbar.set)
+lst5.bind("<MouseWheel>", scrolllistbox)
+lst6.config(yscrollcommand=scrollbar.set)
+lst6.bind("<MouseWheel>", scrolllistbox)
 
 root.mainloop()
