@@ -150,10 +150,10 @@ lst4 = def_listbox4()
 lst5 = def_listbox5()
 lst6 = def_listbox6()
 
-mortgageTotal = 1
-carTotal = 1
-foodTotal = 1
-entertainTotal = 1
+mortgageTotal = 0
+carTotal = 0
+foodTotal = 0
+entertainTotal = 0
 
 # opens pop up for new transaction
 def open_new_expense():
@@ -173,11 +173,11 @@ def open_new_expense():
         expense_date_list.append(current_date)
         expense_type_list.append(expense_type)
         if custom_dropDown.get() == "Mortgage/Rent":
-            mortgageTotal += int(expense_amount)
+            mortgageTotal += float(expense_amount)
         elif custom_dropDown.get() == "Car":
-            carTotal += int(expense_amount)
+            carTotal += float(expense_amount)
         elif custom_dropDown.get() == "Food":
-            foodTotal += int(expense_amount)
+            foodTotal += float(expense_amount)
         else:
             entertainTotal += int(expense_amount)
 
@@ -272,6 +272,12 @@ def open_new_transaction():
     done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
     done_button.place(x=265, y=350)
 
+monthly_entry = tk.Entry(root, font=sf_pro_font)
+monthly_entry.place(x=5, y=875)
+
+def monthly_entry():
+    monthly = monthly_entry.get
+    print(monthly_entry)
 
 # Main UI
 
@@ -293,40 +299,19 @@ radar_chart.place(x=5, y=460)
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
 
-monthly_entry = tk.Entry(root, font=sf_pro_font)
-monthly_entry.place(x=5, y=875)
-
 new_expense = CustomButton(root, text="New Expense", command=lambda: open_new_expense())
 new_expense.place(x=600, y=950)
 
 new_transaction_btn = CustomButton(root, text="New Transaction", command=lambda: open_new_transaction())
 new_transaction_btn.place(x=350, y=950)
 
-monthly_button = CustomButton(root, text="Enter Monthly")
+monthly_button = CustomButton(root, text="Enter Monthly", command= lambda: monthly_entry())
 monthly_button.place(x=377.5, y=877.5)
 
 
 # RADAR CHART BEGINS HERE
 def _invert(x, limits):
     return limits[1] - (x - limits[0])
-
-
-def _scale_data(data, ranges):
-    for d, (y1, y2) in zip(data[1:], ranges[1:]):
-        assert (y1 <= d <= y2) or (y2 <= d <= y1)
-    x1, x2 = ranges[0]
-    d = data[0]
-    if x1 > x2:
-        d = _invert(d, (x1, x2))
-        x1, x2 = x2, x1
-    sdata = [d]
-    for d, (y1, y2) in zip(data[1:], ranges[1:]):
-        if y1 > y2:
-            d = _invert(d, (y1, y2))
-            y1, y2 = y2, y1
-        sdata.append((d - y1) / (y2 - y1)
-                     * (x2 - x1) + x1)
-    return sdata
 
 
 class ComplexRadar():
@@ -360,13 +345,11 @@ class ComplexRadar():
         self.ranges = ranges
         self.ax = axes[0]
 
-    def plot(self, data, *args, **kw):
-        sdata = _scale_data(data, self.ranges)
-        self.ax.plot(self.angle, np.r_[sdata, sdata[0]], *args, **kw)
+    def plot(self, udata, *args, **kw):
+        self.ax.plot(self.angle, np.r_[udata, udata[0]], *args, **kw)
 
-    def fill(self, data, *args, **kw):
-        sdata = _scale_data(data, self.ranges)
-        self.ax.fill(self.angle, np.r_[sdata, sdata[0]], *args, **kw)
+    def fill(self, udata, *args, **kw):
+        self.ax.fill(self.angle, np.r_[udata, udata[0]], *args, **kw)
 
 
 if __name__ == "__main__":
