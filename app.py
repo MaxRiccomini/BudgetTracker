@@ -245,6 +245,7 @@ def open_new_expense():
     custom_dropDown.place(x=5, y=175)
 
 
+
 def open_new_transaction():
     transaction_win = Toplevel(root)
     transaction_win.config(bg="#E0E0E0")
@@ -253,6 +254,19 @@ def open_new_transaction():
     CustomLabel(transaction_win, text="New Transaction").place(x=185, y=10)
     new_transaction = PlaceholderEntry(transaction_win, placeholder="Amount Here:", color="black", font=sf_pro_font)
     new_transaction.place(x=5, y=75)
+
+    def new_transaction_category():
+        new_category_win = Toplevel(transaction_win)
+        new_category_win.config(bg="#E0E0E0")
+        new_category_win.geometry("400x200")
+        new_category_win.title("New Category")
+        new_category_entry = PlaceholderEntry(new_category_win, placeholder="Category Name", color="black", font=sf_pro_font)
+        new_category_entry.place(x=10, y=5)
+        category_done_button = CustomButton(new_category_win, text="Done")
+        category_done_button.place(x=25, y=125)
+
+    new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini, command= lambda: new_transaction_category())
+    new_transaction_cat.place(x=5, y=215)
 
     custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini)
     custom_dropDown.place(x=5, y=175)
@@ -274,10 +288,6 @@ def open_new_transaction():
 
 monthly_entry = tk.Entry(root, font=sf_pro_font)
 monthly_entry.place(x=5, y=875)
-
-def monthly_entry():
-    monthly = monthly_entry.get
-    print(monthly_entry)
 
 # Main UI
 
@@ -305,7 +315,7 @@ new_expense.place(x=600, y=950)
 new_transaction_btn = CustomButton(root, text="New Transaction", command=lambda: open_new_transaction())
 new_transaction_btn.place(x=350, y=950)
 
-monthly_button = CustomButton(root, text="Enter Monthly", command= lambda: monthly_entry())
+monthly_button = CustomButton(root, text="Enter Monthly")
 monthly_button.place(x=377.5, y=877.5)
 
 
