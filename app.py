@@ -260,15 +260,17 @@ def open_new_transaction():
         new_category_win.title("New Category")
         new_category_entry = tk.Entry(new_category_win, font=sf_pro_font)
         new_category_entry.place(x=10, y=5)
-        new_category = new_category_entry.get()
-        if new_category not in transaction_options.values():
-            transaction_options[new_category.capitalize()] = new_category.lower()
-            populate_category_dropdown()
+        options.append(new_category_entry.get())
+        custom_dropDown.options = transaction_options
+        new_category_button = CustomButton(new_category_win, text="Done")
 
-    def populate_category_dropdown():
-        custom_dropDown['menu'].delete(0, 'end')
-        for option in options:
-            custom_dropDown['menu'].add_command(label=option, command=tk._setit(options, options[options]))
+
+    def populate_category_dropdown(df=None):
+        transaction_options = custom_dropDown.options
+        for option in df['Category'].unique():
+            if option not in transaction_options:
+                transaction_options.append(option)
+
 
     new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini, command= lambda: new_transaction_category())
     new_transaction_cat.place(x=5, y=215)
