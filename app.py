@@ -99,10 +99,7 @@ transaction_type_list = []
 transaction_date_list = []
 options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
 
-transaction_options = ["Checking", "Savings"]
 selected_option = tk.StringVar(value=options[0])
-selected_transaction_option = tk.StringVar(value=transaction_options[0])
-
 
 def def_listbox1():
     listbox = Listbox(None)
@@ -244,7 +241,8 @@ def open_new_expense():
     custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font_mini)
     custom_dropDown.place(x=5, y=175)
 
-
+transaction_options = ["Checking", "Savings"]
+selected_transaction_option = tk.StringVar(value=transaction_options[0])
 
 def open_new_transaction():
     transaction_win = Toplevel(root)
@@ -260,20 +258,22 @@ def open_new_transaction():
         new_category_win.config(bg="#E0E0E0")
         new_category_win.geometry("400x200")
         new_category_win.title("New Category")
-        new_category_entry = PlaceholderEntry(new_category_win, placeholder="Category Name", color="black", font=sf_pro_font)
+        new_category_entry = tk.Entry(new_category_win, font=sf_pro_font)
         new_category_entry.place(x=10, y=5)
+        new_category = new_category_entry.get()
+        if new_category not in transaction_options.values():
+            transaction_options[new_category.capitalize()] = new_category.lower()
+            populate_category_dropdown()
 
-        def category_logger():
-            new_category = new_category_entry.get
-            transaction_options.append(new_category)
-
-        category_done_button = CustomButton(new_category_win, text="Done")
-        category_done_button.place(x=25, y=125)
+    def populate_category_dropdown():
+        custom_dropDown['menu'].delete(0, 'end')
+        for option in options:
+            custom_dropDown['menu'].add_command(label=option, command=tk._setit(options, options[options]))
 
     new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini, command= lambda: new_transaction_category())
     new_transaction_cat.place(x=5, y=215)
 
-    custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini)
+    custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini, state="readonly")
     custom_dropDown.place(x=5, y=175)
 
     def save_transaction():
