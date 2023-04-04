@@ -262,6 +262,11 @@ def open_new_transaction():
         new_category_win.title("New Category")
         new_category_entry = PlaceholderEntry(new_category_win, placeholder="Category Name", color="black", font=sf_pro_font)
         new_category_entry.place(x=10, y=5)
+
+        def category_logger():
+            new_category = new_category_entry.get
+            transaction_options.append(new_category)
+
         category_done_button = CustomButton(new_category_win, text="Done")
         category_done_button.place(x=25, y=125)
 
