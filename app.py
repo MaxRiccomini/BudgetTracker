@@ -9,6 +9,7 @@ import matplotlib
 from matplotlib import pyplot
 import json
 import datetime
+
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -19,10 +20,12 @@ budgets = ['700.00',
            '500.00'
            ]
 
-root = tk.Tk()  # create root window
+# create root window and set window icon
+root = tk.Tk()
+root.iconbitmap("app_resources/icon.ico")
 
-sf_pro_font = tkinter.font.Font(family='SF Pro Text', size=28)
-sf_pro_font_mini = tkinter.font.Font(family='SF Pro Text', size=14)
+sf_pro_font = tkinter.font.Font(family='app_resources/SF Pro Text', size=28)
+sf_pro_font_mini = tkinter.font.Font(family='app_resources/SF Pro Text', size=14)
 
 current_date = datetime.date.today()
 formatted_date = datetime.date.today().strftime("%m%d%y")
@@ -101,6 +104,7 @@ options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
 
 selected_option = tk.StringVar(value=options[0])
 
+
 def def_listbox1():
     listbox = Listbox(None)
     listbox.insert(END, *transaction_type_list)
@@ -121,17 +125,20 @@ def def_listbox3():
     listbox.place(x=195, y=60)
     return listbox
 
+
 def def_listbox4():
     listbox = Listbox(None)
     listbox.insert(END, *expense_type_list)
     listbox.place(x=450, y=60)
     return listbox
 
+
 def def_listbox5():
     listbox = Listbox(None)
     listbox.insert(END, *expense_list)
     listbox.place(x=535, y=60)
     return listbox
+
 
 def def_listbox6():
     listbox = Listbox(None)
@@ -151,6 +158,7 @@ mortgageTotal = 0
 carTotal = 0
 foodTotal = 0
 entertainTotal = 0
+
 
 # opens pop up for new transaction
 def open_new_expense():
@@ -178,7 +186,7 @@ def open_new_expense():
         else:
             entertainTotal += int(expense_amount)
 
-        #update things
+        # update things
         def_listbox4()
         def_listbox5()
         def_listbox6()
@@ -191,10 +199,10 @@ def open_new_expense():
         canvas.draw()
         canvas.get_tk_widget().place(x=5, y=460)
 
-        f = Figure(figsize=(4,4), dpi=100)
+        f = Figure(figsize=(4, 4), dpi=100)
         ax = f.add_subplot(111)
 
-        width = .15
+        width = .1
 
         rects1 = ax.bar("Mortgage/Rent", float(mortgageTotal), width)
         rects2 = ax.bar('    ', float(budgets[0]), width)
@@ -232,8 +240,10 @@ def open_new_expense():
         entertainTotalLabelData = CustomLabel(root, text=entertainTotal)
         entertainTotalLabelData.place(x=470, y=370)
 
-        expense_win.destroy()
+        not_configured_graphs.destroy()
+        not_configured_e_list.destroy()
 
+        expense_win.destroy()
 
     done_button = CustomButton(expense_win, text="Done", command=lambda: save_expense())
     done_button.place(x=265, y=350)
@@ -241,8 +251,10 @@ def open_new_expense():
     custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font_mini)
     custom_dropDown.place(x=5, y=175)
 
+
 transaction_options = ["Checking", "Savings"]
 selected_transaction_option = tk.StringVar(value=transaction_options[0])
+
 
 def open_new_transaction():
     transaction_win = Toplevel(root)
@@ -264,15 +276,14 @@ def open_new_transaction():
         custom_dropDown.options = transaction_options
         new_category_button = CustomButton(new_category_win, text="Done")
 
-
     def populate_category_dropdown(df=None):
         transaction_options = custom_dropDown.options
         for option in df['Category'].unique():
             if option not in transaction_options:
                 transaction_options.append(option)
 
-
-    new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini, command= lambda: new_transaction_category())
+    new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini,
+                                       command=lambda: new_transaction_category())
     new_transaction_cat.place(x=5, y=215)
 
     custom_dropDown = ttk.Combobox(transaction_win, value=transaction_options, font=sf_pro_font_mini, state="readonly")
@@ -288,10 +299,12 @@ def open_new_transaction():
         def_listbox1()
         def_listbox2()
         def_listbox3()
+        not_configured_t_list.destroy()
         transaction_win.destroy()
 
     done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
     done_button.place(x=265, y=350)
+
 
 monthly_entry = tk.Entry(root, font=sf_pro_font)
 monthly_entry.place(x=5, y=875)
@@ -315,6 +328,16 @@ radar_chart.place(x=5, y=460)
 
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
+
+not_configured_graphs = CustomLabel(root, text="Not Configured  -  Add an Expense")
+not_configured_graphs.place(x=100, y=700)
+
+not_configured_e_list = CustomLabel(root, text="Add Expense")
+not_configured_e_list.place(x=480, y=150)
+
+not_configured_t_list = CustomLabel(root, text="Add Transaction")
+not_configured_t_list.place(x=50, y=150)
+
 
 new_expense = CustomButton(root, text="New Expense", command=lambda: open_new_expense())
 new_expense.place(x=600, y=950)
