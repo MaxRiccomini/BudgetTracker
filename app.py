@@ -14,12 +14,6 @@ matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-budgets = ['700.00',
-           '300.00',
-           '400.00',
-           '500.00'
-           ]
-
 # create root window and set window icon
 root = tk.Tk()
 root.iconbitmap("app_resources/icon.ico")
@@ -101,6 +95,17 @@ transaction_list = []
 transaction_type_list = []
 transaction_date_list = []
 options = ["Mortgage/Rent", "Car", "Food", "Entertainment"]
+
+budgets = ['0.4',
+           '0.1',
+           '0.2',
+           '0.3'
+           ]
+
+mortBudget = 0
+carBudget = 0
+foodBudget = 0
+entBudget = 0
 
 selected_option = tk.StringVar(value=options[0])
 
@@ -202,16 +207,16 @@ def open_new_expense():
         f = Figure(figsize=(4, 4), dpi=100)
         ax = f.add_subplot(111)
 
-        width = .1
+        width = .15
 
         rects1 = ax.bar("Mortgage/Rent", float(mortgageTotal), width)
-        rects2 = ax.bar('    ', float(budgets[0]), width)
+        rects2 = ax.bar('    ', float(mortBudget), width)
         rects3 = ax.bar("Car", float(carTotal), width)
-        rects4 = ax.bar('   ', float(budgets[1]), width)
+        rects4 = ax.bar('   ', float(carBudget), width)
         rects5 = ax.bar("Food", float(foodTotal), width)
-        rects6 = ax.bar('  ', float(budgets[2]), width)
+        rects6 = ax.bar('  ', float(foodBudget), width)
         rects7 = ax.bar("Entertainment", float(entertainTotal), width)
-        rects8 = ax.bar(' ', float(budgets[3]), width)
+        rects8 = ax.bar(' ', float(entBudget), width)
 
         canvas = FigureCanvasTkAgg(f, master=root)
         canvas.draw()
@@ -245,7 +250,7 @@ def open_new_expense():
 
         expense_win.destroy()
 
-    done_button = CustomButton(expense_win, text="Done", command=lambda: save_expense())
+    done_button = CustomButton(expense_win, text="Done", command=save_expense)
     done_button.place(x=265, y=350)
 
     custom_dropDown = ttk.Combobox(expense_win, value=options, font=sf_pro_font_mini)
@@ -274,13 +279,6 @@ def open_new_transaction():
         new_category_entry.place(x=10, y=5)
         options.append(new_category_entry.get())
         custom_dropDown.options = transaction_options
-        new_category_button = CustomButton(new_category_win, text="Done")
-
-    def populate_category_dropdown(df=None):
-        transaction_options = custom_dropDown.options
-        for option in df['Category'].unique():
-            if option not in transaction_options:
-                transaction_options.append(option)
 
     new_transaction_cat = CustomButton(transaction_win, text="New Account", font=sf_pro_font_mini,
                                        command=lambda: new_transaction_category())
@@ -299,11 +297,22 @@ def open_new_transaction():
         def_listbox1()
         def_listbox2()
         def_listbox3()
+
         not_configured_t_list.destroy()
+
         transaction_win.destroy()
 
     done_button = CustomButton(transaction_win, text="Done", command=lambda: save_transaction())
     done_button.place(x=265, y=350)
+
+
+def save_monthly():
+    monthly = int(monthly_entry.get())
+    mortBudget == monthly * budgets[0]
+    carBudget == monthly * budgets[1]
+    foodBudget == monthly * budgets[2]
+    entBudget == monthly * budgets[3]
+
 
 
 monthly_entry = tk.Entry(root, font=sf_pro_font)
@@ -329,6 +338,15 @@ radar_chart.place(x=5, y=460)
 stacked_bar_chart = CustomFrame(root, width=392.5, height=400)
 stacked_bar_chart.place(x=402.5, y=460)
 
+new_expense = CustomButton(root, text="New Expense", command=open_new_expense)
+new_expense.place(x=600, y=950)
+
+new_transaction_btn = CustomButton(root, text="New Transaction", command=open_new_transaction)
+new_transaction_btn.place(x=350, y=950)
+
+monthly_button = CustomButton(root, text="Enter Monthly", command=save_monthly)
+monthly_button.place(x=377.5, y=877.5)
+
 not_configured_graphs = CustomLabel(root, text="Not Configured  -  Add an Expense")
 not_configured_graphs.place(x=100, y=700)
 
@@ -337,16 +355,6 @@ not_configured_e_list.place(x=480, y=150)
 
 not_configured_t_list = CustomLabel(root, text="Add Transaction")
 not_configured_t_list.place(x=50, y=150)
-
-
-new_expense = CustomButton(root, text="New Expense", command=lambda: open_new_expense())
-new_expense.place(x=600, y=950)
-
-new_transaction_btn = CustomButton(root, text="New Transaction", command=lambda: open_new_transaction())
-new_transaction_btn.place(x=350, y=950)
-
-monthly_button = CustomButton(root, text="Enter Monthly")
-monthly_button.place(x=377.5, y=877.5)
 
 
 # RADAR CHART BEGINS HERE
@@ -399,8 +407,8 @@ if __name__ == "__main__":
                  'Entertainment',)
     data = (int(mortgageTotal), int(carTotal), int(foodTotal),
             int(entertainTotal))
-    ranges = [(1, 700), (1, 500), (1, 300),
-              (1, 400)]
+    ranges = [(1, mortBudget), (1, carBudget), (1, foodBudget),
+              (1, entBudget)]
 
     fig1 = Figure(figsize=(4, 4))
     radar = ComplexRadar(fig1, variables, ranges)
